@@ -1,0 +1,24 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <h1>{{listing.title}}</h1>
+    
+    {% if listing.image_url %}
+            <img src="{{ listing.image_url.url }}" alt="{{ listing.title }}" class="card-img-left" height="300"/>
+            {% else %}
+            <p class="card-text">No image available</p>
+            {% endif %}
+    <h5><strong>Description: </strong>{{ listing.description }}</h5>
+    <h5><strong>Price: </strong>{{ listing.price }}</h5>
+    <h5><strong>Category: </strong>{{ listing.category }}</h5>
+    <h5><strong>Created by: </strong>{{ listing.created_by }}</h5>
+
+    {% if request.user.is_authenticated %}
+        {% if listing.created_by != request.user %}
+            <a href="#">Dar Lance</a>
+        {% endif %}
+    {% else %}
+    <h1>Você precisa estar logado para dar lance</h1>    
+    {% endif %}
+
+{% endblock %}
