@@ -2,7 +2,13 @@
 
 {% block body %}
     <h1>{{listing.title}}</h1>
+    {% if listing.created_by != request.user %}
+        <a href="#">Add Watchlist</a>
+    {% else %}
+        <a href="#">Edit Listing</a>
+    {% endif %}
     
+
     {% if listing.image_url %}
             <img src="{{ listing.image_url.url }}" alt="{{ listing.title }}" class="card-img-left" height="300"/>
             {% else %}
@@ -11,11 +17,18 @@
     <h5><strong>Description: </strong>{{ listing.description }}</h5>
     <h5><strong>Price: </strong>{{ listing.price }}</h5>
     <h5><strong>Category: </strong>{{ listing.category }}</h5>
-    <h5><strong>Created by: </strong>{{ listing.created_by }}</h5>
+    {% if listing.created_by == request.user %}
+     <h5><strong>Created by: </strong>You</h5>
+     {% else %}
+     <h5><strong>Created by: </strong>{{ listing.created_by }}</h5>
+    {% endif %}
 
     {% if request.user.is_authenticated %}
         {% if listing.created_by != request.user %}
-            <a href="#">Dar Lance</a>
+            <form action="" method="POST">
+                <label for="amount">Dar Lance</label>
+                <input name="amount" id="amount" type="text">
+            </form>
         {% endif %}
     {% else %}
     <h1>Você precisa estar logado para dar lance</h1>    

@@ -1,11 +1,14 @@
 {% extends "auctions/layout.html" %} {% block body %}
 <h2>Active Listings</h2>
 <div class="container-fluid px-2">
+
   <div class="row">
     {% for listing in listings %} {% if listing.is_active%}
+
     <div class="col-12 mb-4">
       <div class="card">
         <div class="card-header">
+         
           <a href="{% url 'listing_details' listing.id %}">
             <h5 class="card-title">{{ listing.title }}</h5>
           </a>
@@ -24,6 +27,10 @@
             {% endif %}
           </div>
           <div>
+
+            {% if listing.created_by == request.user %}
+              <h3>{{ listing_created_by }} Você é o criador</h3>
+            {% endif %}
             <p>Listing ID: {{ listing.id }}</p>
             <p><strong>Current Value: </strong> {{ listing.price }}</p>
             <p><strong>Description: </strong>{{ listing.category }}</p>
