@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.forms import ValidationError
 
 class User(AbstractUser):
     def __str__(self):
@@ -23,7 +24,25 @@ class Bids(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.amount}"
+    
+    def clean(self):
+        if self.listing.created_by == self.user:
+            raise ValidationError("You cannot bid on your own listing.")
 
+        if self.amount <= self.listing.price:
+            raise ValidationError("Your bid must be higher than the current price")
+        
+        if self.amount <= 0:
+            raise ValidationError("Bid amount must be positive")
+         
+        if Bids.objects.filter(listing=self.listing, amount=self.amount).exists():
+            raise ValidationError("This bid amount has already been placed. Please offer a higher amount.")
+        
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+        
 class Comments(models.Model):
     listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
