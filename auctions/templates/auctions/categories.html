@@ -1,5 +1,22 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-    <h1>Hello, World!</h1>
+    <h2>Categorias Disponíveis</h2>
+
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="?category={{ category }}">{{ category }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Produtos</h3>
+    <ul>
+        {% for listing in listings %}
+            <li>{{ listing.title }} - Categoria: {{ listing.category }}</li>
+        {% empty %}
+            <li>Nenhum produto encontrado para esta categoria.</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

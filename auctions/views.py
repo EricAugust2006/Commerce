@@ -241,4 +241,16 @@ def add_comment(request, listing_id):
     })
 
 def all_categories(request):
-    return render(request, 'auctions/categories.html')
+    category_name = request.GET.get('category') 
+    
+    if category_name:
+        listings = Listings.objects.filter(category=category_name)
+    else:
+        listings = Listings.objects.all()
+
+    categories = Listings.objects.values_list('category', flat=True).distinct()
+
+    return render(request, 'auctions/categories.html', {
+        "listings": listings,
+        "categories": categories
+    })
