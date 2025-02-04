@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .models import User, Listings, Bids, Comments, WatchList
-from .forms import ListingForm
+from .forms import ListingForm, CommentsForm
 
 def index(request):
     listings = Listings.objects.filter(is_active=True)
@@ -219,3 +219,26 @@ def edit_list(request, listing_id):
     return render(request, 'auctions/edit_listing.html',{
         "form": form,
     })
+
+@login_required
+def add_comment(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+    comments = listing.comments.all()
+
+    if request.method == "POST":
+        content = request.POST.get("content") 
+        if content:  
+            Comments.objects.create(
+                listing=listing,
+                user=request.user,
+                content=content
+            )
+            return redirect("listing_details", listing_id=listing.id)
+
+    return render(request, "auctions/listing_details.html", {
+        "listing": listing,
+        "comments": comments
+    })
+
+def all_categories(request):
+    return render(request, 'auctions/categories.html')

@@ -36,11 +36,14 @@
             <!-- <p>Listing ID: {{ listing.id }}</p> -->
             <p><strong>Current Value: </strong> {{ listing.price }}</p>
             <p><strong>Category: </strong>{{ listing.category }}</p>
+            <p><strong>Description: </strong> {{listing.description }} </p>
           </div>
         
           {% if listing.created_by == request.user %}
-            <a href="{% url 'remove_listing' listing.id %}">Remove Listing</a>
-            <a href="{% url 'edit_list' listing.id %} ">Edit Listing</a>
+          <div class="form-group">
+            <a href="{% url 'remove_listing' listing.id %}" class="btn btn-secondary">Remove Listing</a>
+            <a href="{% url 'edit_list' listing.id %}" class="btn btn-secondary">Edit Listing</a>
+          </div>
           {% endif%}
         </div>
       </div>

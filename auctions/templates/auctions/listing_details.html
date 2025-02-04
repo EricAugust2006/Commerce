@@ -75,4 +75,32 @@
       </div>
     </div>
   </div>
+
+  <h3>Comentários</h3>
+    <ul class="list-group">
+        {% for comment in listing.comments.all %}
+            <li class="list-group-item">
+                <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
+                <br>
+                <small class="text-muted">{{ comment.timestamp|date:"d/m/Y H:i" }}</small>
+            </li>
+        {% empty %}
+            <li class="list-group-item">Ainda não há comentários.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+      <h4>Adicionar Comentário</h4>
+      <form method="POST" action="{% url 'add_comment' listing.id %}" class="mb-3">
+          {% csrf_token %}
+          <div class="form-group">
+              <textarea id="id_content" name="content" class="form-control" rows="3" placeholder="Escreva seu comentário aqui..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Enviar</button>
+      </form>
+    {% else %}
+      <p>Faça login para comentar.</p>
+    {% endif %}
 {% endblock %}
