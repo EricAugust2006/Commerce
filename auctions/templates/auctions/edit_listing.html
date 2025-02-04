@@ -1,0 +1,16 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100 overflow-hidden">
+    <div class="col-md-6 col-lg-4">
+        <h2 class="text-center mb-4">Editar Listagem</h2>
+        <form method="POST" class="p-4 border rounded bg-light shadow-sm">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-100">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

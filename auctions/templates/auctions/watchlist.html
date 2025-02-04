@@ -1,5 +1,41 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-    <h1>Hello, World!</h1>
+<div class="container mt-5">
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2 class="mb-4">Sua Watchlist</h2>
+
+    {% if watchlist_items %}
+    <div class="row">
+        {% for item in watchlist_items %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if item.listing.image_url %}
+                    <img src="{{ item.listing.image_url.url }}" alt="{{ item.listing.title }}" class="card-img-top" />
+                {% else %}
+                    <img src="https://via.placeholder.com/350x200?text=No+Image" alt="No image available" class="card-img-top" />
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ item.listing.title }}</h5>
+                    <p class="card-text">Price: {{ item.listing.price }}</p>
+                    <div class="d-flex justify-content-between mt-auto">
+                        <a href="{% url 'listing_details' item.listing.id %}" class="btn btn-primary">Ver Detalhes</a>
+                        <a href="{% url 'remove_watchlist' item.listing.id %}" class="btn btn-danger">Remover</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Você não tem nenhum item na sua watchlist.</p>
+    {% endif %}
+</div>
 {% endblock %}

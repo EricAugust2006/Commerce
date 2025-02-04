@@ -1,69 +1,78 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-<div class="container mt-5">
-    
+  <div class="container mt-5">
     {% if messages %}
-        <div class="alert alert-info">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
+      <div class="alert alert-info">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
     {% endif %}
 
     <div class="row">
-        <div class="col-md-6">
-            <h1>{{ listing.title }}</h1>
-            {% if listing.image_url %}
-                <img src="{{ listing.image_url.url }}" alt="{{ listing.title }}" class="img-fluid mb-3" />
-            {% else %}
-                <p>No image available</p>
-            {% endif %}
-        </div>
+      <div class="col-md-6">
+        <h1>{{ listing.title }}</h1>
+        {% if listing.image_url %}
+          <img src="{{ listing.image_url.url }}" alt="{{ listing.title }}" class="img-fluid mb-3" />
+        {% else %}
+          <p>No image available</p>
+        {% endif %}
+      </div>
 
-        <div class="col-md-6">
+      <div class="col-md-6">
+        {% if request.user != listing.created_by %}
+          <form action="{% url 'add_watchlist' listing.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Add to Watchlist</button>
+          </form>
+        {% endif %}
+
+        <div class="card mt-3">
+          <div class="card-body">
             <h5><strong>Description: </strong>{{ listing.description }}</h5>
             <h5><strong>Price: </strong>{{ listing.price }}</h5>
             <h5><strong>Category: </strong>{{ listing.category }}</h5>
             <h5><strong>Created by: </strong>{{ listing.created_by }}</h5>
 
             {% if highest_bid %}
-                <h5><strong>Current Highest Bid: <strong> {{ highest_bid.amount}} by {{ highest_bid.user.username }} </strong></h5>
+              <h5><strong>Current Highest Bid: </strong> {{ highest_bid.amount}} by {{ highest_bid.user.username }}</h5>
             {% else %}
-                <h5>No Bids Yet</h5>
+              <h5>No Bids Yet</h5>
             {% endif %}
-
-            {% if request.user != listing.created_by %}
-                <form action="{% url 'place_bid' listing_id=listing.id %}" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">Your bid</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="amount" name="amount" placeholder="Enter your bid" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Place Bid</button>
-                </form>
-            {% else %}
-                <p>You cannot bid on your own listing.</p>
-            {% endif %}
+          </div>
         </div>
-    </div>
-</div>
 
-<div class="row mt-4">
-    <div class="col-md-8">
+        {% if request.user != listing.created_by %}
+          <form action="{% url 'place_bid' listing_id=listing.id %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="amount" class="form-label"><h2> Your bid</h2></label>
+              <input type="number" step="0.01" min="0" class="form-control" id="amount" name="amount" placeholder="Enter your bid" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Place Bid</button>
+          </form>
+        {% else %}
+          <a class="btn btn-primary mt-2" href="{% url 'edit_list' listing.id %} ">Edit Listing</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-8">
         <h3>Bidding History</h3>
         {% if bids %}
-            <ul class="list-group">
-                {% for bid in bids %}
-                <li class="list-group-item">
-                    <strong>{{ bid.user.username }}</strong> bid <strong>{{ bid.amount }}</strong>
-                </li>
-                {% endfor %}
-            </ul>
+          <ul class="list-group">
+            {% for bid in bids %}
+              <li class="list-group-item">
+                <strong>{{ bid.user.username }}</strong> bid <strong>{{ bid.amount }}</strong>
+              </li>
+            {% endfor %}
+          </ul>
         {% else %}
-        <p>No Bids placed yet.</p>
+          <p>No Bids placed yet.</p>
         {% endif %}
+      </div>
     </div>
-</div>
-
+  </div>
 {% endblock %}

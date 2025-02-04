@@ -8,8 +8,8 @@ from django.forms import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from .models import User, Listings, Bids, Comments
-
+from .models import User, Listings, Bids, Comments, WatchList
+from .forms import ListingForm
 
 def index(request):
     listings = Listings.objects.filter(is_active=True)
@@ -143,6 +143,7 @@ def listing_details(request, listing_id):
         {"listing": listing, "bids": bids, "highest_bid": highest_bid},
     )
 
+
 @login_required
 def place_bid(request, listing_id):
     listing = get_object_or_404(Listings, id=listing_id)
@@ -153,7 +154,7 @@ def place_bid(request, listing_id):
         if not bid_amount:
             messages.success(request, "Your bid has been placed successfully")
             return redirect("listing_details", listing_id=listing.id)
-        
+
         try:
             bid_amount = Decimal(bid_amount)
         except ValueError:
@@ -162,13 +163,59 @@ def place_bid(request, listing_id):
 
         bid = Bids(listing=listing, user=request.user, amount=bid_amount)
 
-        try:    
+        try:
             bid.save()
             messages.success(request, "Your bid has been placed successfully")
         except ValidationError as e:
             messages.error(request, str(e))
-    
+
     return redirect("listing_details", listing_id=listing.id)
 
-def watchlist_listing(request):
-    return render(request, "auctions/watchlist.html")
+
+@login_required
+def add_watchlist(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+
+    if request.method == "POST":
+        watchlist_item, created = WatchList.objects.get_or_create(user=request.user, listing=listing)
+
+        if created:
+            messages.success(request, "Item adicionado à sua watchlist!")
+        else:
+            messages.warning(request, "Este item já está na sua watchlist.")
+
+    return redirect("watchlist")
+
+@login_required
+def watchlist(request):
+    watchlist_items = WatchList.objects.filter(user=request.user)
+
+    return render(
+        request, "auctions/watchlist.html", {"watchlist_items": watchlist_items}
+    )
+
+@login_required
+def remove_watchlist(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+    watchlist_item = get_object_or_404(WatchList, user=request.user, listing=listing)
+
+    watchlist_item.delete()
+    messages.success(request, "Item removido com sucesso da watchlist")
+
+    return redirect("watchlist")
+
+@login_required
+def edit_list(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+
+    if request.method == "POST":
+        form = ListingForm(request.POST, instance=listing)
+        if form.is_valid():
+            form.save()
+            return redirect("listing_details", listing_id=listing.id)
+    else:
+        form = ListingForm(instance=listing)
+        
+    return render(request, 'auctions/edit_listing.html',{
+        "form": form,
+    })

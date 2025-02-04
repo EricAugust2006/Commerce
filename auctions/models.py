@@ -42,7 +42,16 @@ class Bids(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
-        
+class WatchList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
+    listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name="watchlist")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.listing.title}"
+    
+    class Meta:
+        unique_together = ("user", "listing")
+
 class Comments(models.Model):
     listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
@@ -51,3 +60,4 @@ class Comments(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.content[:20]}"
+

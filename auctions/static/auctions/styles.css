@@ -1,6 +1,7 @@
+
 body {
     padding: 10px;
-    background-color: black;
+    overflow-x: hidden;
 }
 .listing-image {
     height: 200px;  

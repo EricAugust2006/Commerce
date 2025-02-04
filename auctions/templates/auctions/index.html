@@ -33,13 +33,14 @@
             {% if listing.created_by == request.user %}
               <h3>{{ listing_created_by }} Você é o criador</h3>
             {% endif %}
-            <p>Listing ID: {{ listing.id }}</p>
+            <!-- <p>Listing ID: {{ listing.id }}</p> -->
             <p><strong>Current Value: </strong> {{ listing.price }}</p>
-            <p><strong>Description: </strong>{{ listing.category }}</p>
+            <p><strong>Category: </strong>{{ listing.category }}</p>
           </div>
         
           {% if listing.created_by == request.user %}
             <a href="{% url 'remove_listing' listing.id %}">Remove Listing</a>
+            <a href="{% url 'edit_list' listing.id %} ">Edit Listing</a>
           {% endif%}
         </div>
       </div>
