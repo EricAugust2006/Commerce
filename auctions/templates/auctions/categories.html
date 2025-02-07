@@ -1,22 +1,26 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-    <h2>Categorias Disponíveis</h2>
+<div class="container mx-auto mt-8 max-w-6xl">
+    <h2 class="text-5xl font-light text-center text-blue-600 mb-8">Available Categories</h2>
 
-    <ul>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {% for category in categories %}
-            <li>
-                <a href="?category={{ category }}">{{ category }}</a>
+            <li class="bg-blue-200 rounded-lg p-4 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                <a href="?category={{ category }}" class="text-blue-800 font-semibold text-xl text-center block">{{ category }}</a>
             </li>
         {% endfor %}
     </ul>
 
-    <h3>Produtos</h3>
-    <ul>
+    <h3 class="text-3xl font-light text-center text-blue-600 mb-4">Products</h3>
+    <ul class="list-disc list-inside">
         {% for listing in listings %}
-            <li>{{ listing.title }} - Categoria: {{ listing.category }}</li>
+            <li class="text-lg text-gray-700">
+                {{ listing.title }} - <strong>Categoria:</strong> {{ listing.category }}
+            </li>
         {% empty %}
-            <li>Nenhum produto encontrado para esta categoria.</li>
+            <li class="text-lg text-gray-500">Nenhum produto encontrado para esta categoria.</li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}

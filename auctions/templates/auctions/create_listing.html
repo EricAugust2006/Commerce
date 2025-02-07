@@ -1,46 +1,48 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+<div class="container mx-auto max-w-4xl mt-8 p-6 bg-white rounded-lg shadow-md">
+    {% if message_error %}
+        <div class="bg-red-100 border border-red-300 text-red-700 p-4 rounded-lg mb-4">
+            {{ message_error }}
+        </div>
+    {% endif %}
 
-{% if message_error %}
-    <div class="alert alert_danger">{{ message_error }}</div>
-{% endif %}
-
-<div class="container my-5">
-    <h2 class="text-center mb-4">Create a New Listing</h2>
-    <form class="col-12 col-md-8 mx-auto" action="{% url 'create_listing' %}" method="POST" enctype="multipart/form-data">
+    <h2 class="text-4xl font-light text-center text-blue-600 mb-6">Create a New Listing</h2>
+    <form action="{% url 'create_listing' %}" method="POST" enctype="multipart/form-data" class="space-y-4">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="name_creator" class="form-label">Creator of listing</label>
-            <input name="name_creator" id="name_creator" class="form-control" autofocus type="text" placeholder="Enter the your name" required>
+        
+        <div>
+            <label for="name_creator" class="block text-sm font-medium text-gray-700">Creator of listing</label>
+            <input name="name_creator" id="name_creator" type="text" placeholder="Enter your name" required autofocus class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
 
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input name="title" id="title" class="form-control" autofocus type="text" placeholder="Enter the title" required>
+        <div>
+            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+            <input name="title" id="title" type="text" placeholder="Enter the title" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
 
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <input name="description" id="description" class="form-control" type="text" placeholder="Enter the description" required>
+        <div>
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <input name="description" id="description" type="text" placeholder="Enter the description" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
 
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <input name="category" id="category" class="form-control" type="text" placeholder="Enter the category" required>
+        <div>
+            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+            <input name="category" id="category" type="text" placeholder="Enter the category" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
 
-        <div class="mb-3">
-            <label for="value" class="form-label">Value</label>
-            <input name="value" id="value" class="form-control" type="number" placeholder="Enter the value" required>
+        <div>
+            <label for="value" class="block text-sm font-medium text-gray-700">Value</label>
+            <input name="value" id="value" type="number" placeholder="Enter the value" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
 
-        <div class="mb-3">
-            <label for="image" class="form-label">Image</label>
-            <input name="image" id="image" class="form-control" type="file" required>
+        <div>
+            <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+            <input name="image" id="image" type="file" required class="mt-1 block w-full border border-gray-300 rounded-md p-2">
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Submit</button>
+        <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-300">Submit</button>
     </form>
 </div>
 {% endblock %}

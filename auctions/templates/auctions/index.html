@@ -1,54 +1,44 @@
-{% extends "auctions/layout.html" %} {% block body %}
-<h2>Active Listings</h2>
-<div class="container-fluid px-2">
+{% extends "auctions/layout.html" %} 
 
-  <div class="row">
-    {% for listing in listings %} {% if listing.is_active%}
+{% block body %}
+<h2 class="text-5xl font-light text-center text-blue-600 mb-8">Active Listings</h2>
+<div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for listing in listings %} 
+    {% if listing.is_active %}
+    <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105 hover:shadow-lg"> 
+      <div class="flex flex-col gap-2">
+        <a class="bg-blue-200 rounded-lg p-2 transition-colors duration-300 hover:bg-blue-300" href="{% url 'listing_details' listing.id %}">
+          <h5 class="text-2xl text-center text-blue-800 font-semibold">{{ listing.title }}</h5>
+        </a>
 
-    <div class="col-12 mb-4">
-      <div class="card">
-        <div class="card-header">
-         
+        <section class="flex justify-center">
+          {% if listing.image_url %}
           <a href="{% url 'listing_details' listing.id %}">
-            <h5 class="card-title">{{ listing.title }}</h5>
+            <img src="{{ listing.image_url.url }}" alt="{{ listing.title }}" class="w-full h-48 object-cover rounded-md" />
           </a>
-        </div>
-        <div class="card-body d-flex align-items-center">
-          <div class="me-3">
-            {% if listing.image_url %}
-            <a href="{% url 'listing_details' listing.id %}">
-              <img
-                src="{{ listing.image_url.url }}"
-                alt="{{ listing.title }}"
-                class="card-img-left"
-                height="200"
-              />
-            </a>
-            {% else %}
-            <p class="card-text">No image available</p>
-            {% endif %}
-          </div>
-          <div>
-
-            {% if listing.created_by == request.user %}
-              <h3>{{ listing_created_by }} Você é o criador</h3>
-            {% endif %}
-            <!-- <p>Listing ID: {{ listing.id }}</p> -->
-            <p><strong>Current Value: </strong> {{ listing.price }}</p>
-            <p><strong>Category: </strong>{{ listing.category }}</p>
-            <p><strong>Description: </strong> {{listing.description }} </p>
-          </div>
-        
-          {% if listing.created_by == request.user %}
-          <div class="form-group">
-            <a href="{% url 'remove_listing' listing.id %}" class="btn btn-secondary">Remove Listing</a>
-            <a href="{% url 'edit_list' listing.id %}" class="btn btn-secondary">Edit Listing</a>
-          </div>
-          {% endif%}
-        </div>
+          {% else %}
+          <p class="text-center text-gray-500">No image available</p>
+          {% endif %}
+        </section>
       </div>
+
+      <div class="mt-4">
+        {% if listing.created_by == request.user %}
+          <h3 class="text-blue-600 font-medium">Você é o criador</h3>
+        {% endif %}
+        <p class="text-gray-700"><strong>Current Value: </strong> {{ listing.price }}</p>
+        <p class="text-gray-700"><strong>Category: </strong>{{ listing.category }}</p>
+        <p class="text-gray-700"><strong>Description: </strong> {{ listing.description }} </p>
+      </div>
+      
+      {% if listing.created_by == request.user %}
+      <div class="mt-4 flex justify-between">
+        <a class="font-light text-xl bg-blue-50 p-2 rounded-md transition-colors duration-300 hover:bg-blue-100" href="{% url 'remove_listing' listing.id %}">Remove Listing</a>
+        <a class="font-light text-xl bg-blue-50 p-2 rounded-md transition-colors duration-300 hover:bg-blue-100" href="{% url 'edit_list' listing.id %}">Edit Listing</a>
+      </div>
+      {% endif %}
     </div>
-    {% endif %} {% endfor %}
-  </div>
+    {% endif %} 
+    {% endfor %}
 </div>
 {% endblock %}

@@ -1,41 +1,43 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-<div class="container mt-5">
+<div class="container mx-auto max-w-6xl mt-8">
+    <h2 class="text-5xl font-light text-center text-blue-600 mb-8">Watchlist</h2>
+    
     {% if messages %}
-        <div class="alert alert-info">
+        <div class="bg-blue-100 border border-blue-300 text-blue-700 p-4 rounded-lg mb-4">
             {% for message in messages %}
                 <p>{{ message }}</p>
             {% endfor %}
         </div>
     {% endif %}
 
-    <h2 class="mb-4">Sua Watchlist</h2>
-
     {% if watchlist_items %}
-    <div class="row">
-        {% for item in watchlist_items %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if item.listing.image_url %}
-                    <img src="{{ item.listing.image_url.url }}" alt="{{ item.listing.title }}" class="card-img-top" />
-                {% else %}
-                    <img src="https://via.placeholder.com/350x200?text=No+Image" alt="No image available" class="card-img-top" />
-                {% endif %}
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ item.listing.title }}</h5>
-                    <p class="card-text">Price: {{ item.listing.price }}</p>
-                    <div class="d-flex justify-content-between mt-auto">
-                        <a href="{% url 'listing_details' item.listing.id %}" class="btn btn-primary">Ver Detalhes</a>
-                        <a href="{% url 'remove_watchlist' item.listing.id %}" class="btn btn-danger">Remover</a>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in watchlist_items %}
+            <div class="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105 hover:shadow-lg">
+                <div class="flex flex-col gap-2 justify-between">
+                    <div class="flex justify-center ">
+                        {% if item.listing.image_url %}
+                            <img src="{{ item.listing.image_url.url }}" alt="{{ item.listing.title }}" class="w-full h-100 object-cover rounded-md " />
+                        {% else %}
+                            <img src="https://via.placeholder.com/350x200?text=No+Image" alt="No image available" class="w-full h-48 object-cover rounded-md" />
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col justify-between mt-4">
+                        <h5 class="text-xl text-center text-blue-800 font-semibold">{{ item.listing.title }}</h5>
+                        <p class="text-gray-700 text-center"><strong>Price: </strong> {{ item.listing.price }}</p>
+                        <div class="flex justify-center space-x-4 mt-2">
+                            <a class="font-light text-blue-600 hover:underline" href="{% url 'listing_details' item.listing.id %}">Ver Detalhes</a>
+                            <a class="font-light text-red-600 hover:underline" href="{% url 'remove_watchlist' item.listing.id %}">Remover</a>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
     {% else %}
-    <p>Você não tem nenhum item na sua watchlist.</p>
+        <p class="text-center text-gray-500 mt-6">Você não tem nenhum item na sua watchlist.</p>
     {% endif %}
 </div>
 {% endblock %}

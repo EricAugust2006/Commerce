@@ -1,30 +1,32 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-
-    <h2>Register</h2>
+<div class="container mx-auto p-4 max-w-md">
+    <h2 class="text-3xl font-semibold text-center mb-6">Register</h2>
 
     {% if message %}
-        <div>{{ message }}</div>
+        <div class="bg-red-100 border border-red-300 text-red-700 p-4 rounded-lg mb-4">
+            {{ message }}
+        </div>
     {% endif %}
 
-    <form action="{% url 'register' %}" method="post">
+    <form action="{% url 'register' %}" method="post" class="bg-blue-100 p-6 rounded-lg shadow-md">
         {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        <div class="mb-4">
+            <input autofocus type="text" name="username" placeholder="Username" class="border border-gray-300 rounded-md p-2 w-full" required>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        <div class="mb-4">
+            <input type="email" name="email" placeholder="Email Address" class="border border-gray-300 rounded-md p-2 w-full" required>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+        <div class="mb-4">
+            <input type="password" name="password" placeholder="Password" class="border border-gray-300 rounded-md p-2 w-full" required>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        <div class="mb-4">
+            <input type="password" name="confirmation" placeholder="Confirm Password" class="border border-gray-300 rounded-md p-2 w-full" required>
         </div>
-        <input class="btn btn-primary" type="submit" value="Register">
+        <input type="submit" value="Register" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition w-full">
     </form>
 
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
+    <p class="mt-4 text-center">Already have an account? <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Log In here.</a></p>
+</div>
 {% endblock %}

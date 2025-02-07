@@ -15,7 +15,7 @@ class ListingForm(forms.ModelForm):
 class CommentsForm(forms.ModelForm):
     class Meta:
         model = Comments
-        fields = ['content']  # Certifique-se de incluir apenas o campo necessário
+        fields = ['content']  
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Escreva seu comentário...'}),
         }

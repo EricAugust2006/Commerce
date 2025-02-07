@@ -1,106 +1,100 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-  <div class="container mt-5">
+<div class="container mx-auto p-4">
     {% if messages %}
-      <div class="alert alert-info">
+      <div class="bg-blue-100 border border-blue-300 text-blue-700 p-4 rounded-lg mb-4">
         {% for message in messages %}
           <p>{{ message }}</p>
         {% endfor %}
       </div>
     {% endif %}
 
-    <div class="row">
-      <div class="col-md-6">
-        <h1>{{ listing.title }}</h1>
-        {% if listing.image_url %}
-          <img src="{{ listing.image_url.url }}" alt="{{ listing.title }}" class="img-fluid mb-3" />
-        {% else %}
-          <p>No image available</p>
-        {% endif %}
-      </div>
+    <div class="flex flex-col justify-center items-center">
+      <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-3xl">
+          <h1 class="text-5xl font-light text-center text-blue-600 mb-8">{{ listing.title }}</h1>
+          {% if listing.image_url %}
+            <img class="w-full object-cover rounded-md mb-4" src="{{ listing.image_url.url }}" alt="{{ listing.title }}" />
+          {% else %}
+            <p class="text-center w-full h-64 flex items-center justify-center text-gray-500">No image available</p>
+          {% endif %}
 
-      <div class="col-md-6">
-        {% if request.user != listing.created_by %}
-          <form action="{% url 'add_watchlist' listing.id %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Add to Watchlist</button>
-          </form>
-        {% endif %}
+          <div class="mb-4">
+            {% if request.user != listing.created_by %}
+              <form action="{% url 'add_watchlist' listing.id %}" method="POST" class="mb-4">
+                {% csrf_token %}
+                <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition">Add to Watchlist</button>
+              </form>
+            {% endif %}
 
-        <div class="card mt-3">
-          <div class="card-body">
-            <h5><strong>Description: </strong>{{ listing.description }}</h5>
-            <h5><strong>Price: </strong>{{ listing.price }}</h5>
-            <h5><strong>Category: </strong>{{ listing.category }}</h5>
-            <h5><strong>Created by: </strong>{{ listing.created_by }}</h5>
+            <h5 class="text-lg"><strong>Description: </strong>{{ listing.description }}</h5>
+            <h5 class="text-lg"><strong>Price: </strong>{{ listing.price }}</h5>
+            <h5 class="text-lg"><strong>Category: </strong>{{ listing.category }}</h5>
+            <h5 class="text-lg"><strong>Created by: </strong>{{ listing.created_by }}</h5>
 
             {% if highest_bid %}
-              <h5><strong>Current Highest Bid: </strong> {{ highest_bid.amount}} by {{ highest_bid.user.username }}</h5>
+              <h5 class="text-lg"><strong>Current Highest Bid: </strong> {{ highest_bid.amount }} by {{ highest_bid.user.username }}</h5>
             {% else %}
-              <h5>No Bids Yet</h5>
+              <h5 class="text-lg">No Bids Yet</h5>
             {% endif %}
           </div>
+
+          {% if request.user != listing.created_by %}
+            <form action="{% url 'place_bid' listing_id=listing.id %}" method="POST" class="mb-4">
+              {% csrf_token %}
+              <div class="mb-4">
+                <label for="amount" class="block text-lg"><h2>Your bid</h2></label>
+                <input type="number" step="0.01" min="0" id="amount" name="amount" placeholder="Enter your bid" required class="border border-gray-300 rounded-md p-2 w-full">
+              </div>
+              <button type="submit" class="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 transition">Place Bid</button>
+            </form>
+          {% else %}
+            <a href="{% url 'edit_list' listing.id %}" class="text-blue-500 hover:underline">Edit Listing</a>
+          {% endif %}
         </div>
-
-        {% if request.user != listing.created_by %}
-          <form action="{% url 'place_bid' listing_id=listing.id %}" method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="amount" class="form-label"><h2> Your bid</h2></label>
-              <input type="number" step="0.01" min="0" class="form-control" id="amount" name="amount" placeholder="Enter your bid" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Place Bid</button>
-          </form>
-        {% else %}
-          <a class="btn btn-primary mt-2" href="{% url 'edit_list' listing.id %} ">Edit Listing</a>
-        {% endif %}
       </div>
     </div>
 
-    <div class="row mt-4">
-      <div class="col-md-8">
-        <h3>Bidding History</h3>
-        {% if bids %}
-          <ul class="list-group">
-            {% for bid in bids %}
-              <li class="list-group-item">
-                <strong>{{ bid.user.username }}</strong> bid <strong>{{ bid.amount }}</strong>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p>No Bids placed yet.</p>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-
-  <h3>Comentários</h3>
-    <ul class="list-group">
-        {% for comment in listing.comments.all %}
-            <li class="list-group-item">
-                <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
-                <br>
-                <small class="text-muted">{{ comment.timestamp|date:"d/m/Y H:i" }}</small>
+    <div class="mt-8">
+      <h3 class="text-2xl font-semibold mb-4">Bidding History</h3>
+      {% if bids %}
+        <ul class="list-disc list-inside">
+          {% for bid in bids %}
+            <li>
+              <strong>{{ bid.user.username }}</strong> bid <strong>{{ bid.amount }}</strong>
             </li>
-        {% empty %}
-            <li class="list-group-item">Ainda não há comentários.</li>
-        {% endfor %}
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No Bids placed yet.</p>
+      {% endif %}
+    </div>
+
+    <h3 class="text-2xl font-semibold mt-8">Comentários</h3>
+    <ul class="list-disc list-inside">
+      {% for comment in listing.comments.all %}
+        <li>
+          <strong>{{ comment.user.username }}</strong>: {{ comment.content }}<br>
+          <small class="text-gray-500">{{ comment.timestamp|date:"d/m/Y H:i" }}</small>
+        </li>
+      {% empty %}
+        <li>Ainda não há comentários.</li>
+      {% endfor %}
     </ul>
 
-    <hr>
+    <hr class="my-4">
 
     {% if user.is_authenticated %}
-      <h4>Adicionar Comentário</h4>
-      <form method="POST" action="{% url 'add_comment' listing.id %}" class="mb-3">
-          {% csrf_token %}
-          <div class="form-group">
-              <textarea id="id_content" name="content" class="form-control" rows="3" placeholder="Escreva seu comentário aqui..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary mt-2">Enviar</button>
+      <h4 class="text-xl font-semibold mt-4">Adicionar Comentário</h4>
+      <form method="POST" action="{% url 'add_comment' listing.id %}">
+        {% csrf_token %}
+        <div>
+          <textarea id="id_content" name="content" rows="3" placeholder="Escreva seu comentário aqui..." class="border border-gray-300 rounded-md p-2 w-full"></textarea>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition">Enviar</button>
       </form>
     {% else %}
       <p>Faça login para comentar.</p>
     {% endif %}
+</div>
 {% endblock %}
