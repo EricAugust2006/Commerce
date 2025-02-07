@@ -14,12 +14,12 @@ SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['commerce-production-ffd6.up.railway.app', 'www.ericcommercerauc.com']
+ALLOWED_HOSTS = ['commerceproduction.up.railway.app', 'www.ericcommercerauc.com']
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['https://commerce-production-ffd6.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://commerceproduction.up.railway.app']
 
 
 CSRF_COOKIE_SAMESITE = 'Lax' 
