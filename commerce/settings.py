@@ -14,7 +14,7 @@ SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['commerceproduction.up.railway.app', 'www.ericcommercerauc.com']
+ALLOWED_HOSTS = ['commerceproduction.up.railway.app', '127.0.0.1']
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
@@ -116,5 +116,10 @@ USE_TZ = True
 # O Django usa STATIC_URL para localizar os arquivos estáticos
 STATIC_URL = '/static/'
 
+
 # Se você estiver em um ambiente de produção, você também pode precisar definir onde os arquivos estáticos serão armazenados:
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
