@@ -1,5 +1,12 @@
 import os
 
+from environ import Env
+env = Env()
+env.read_env()
+
+ENVIRONMENT = env('ENVIRONMENT', default="development")
+ENVIRONMENT = "production"
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -9,12 +16,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
+SECRET_KEY = env('SECRET_KEY', default="secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if ENVIRONMENT == 'development':
+    DEBUG = True
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = ['commerceproduction.up.railway.app', '127.0.0.1']
+ALLOWED_HOSTS = ['commerceproduction.up.railway.app', '127.0.0.1', 'localhost']
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
@@ -44,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'commerce.urls'
@@ -70,12 +81,20 @@ WSGI_APPLICATION = 'commerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if ENVIRONMENT == 'development':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 AUTH_USER_MODEL = 'auctions.User'
 
@@ -115,10 +134,10 @@ USE_TZ = True
 # Arquivos estáticos (CSS, JavaScript, Imagens)
 # O Django usa STATIC_URL para localizar os arquivos estáticos
 STATIC_URL = '/static/'
-
-
 # Se você estiver em um ambiente de produção, você também pode precisar definir onde os arquivos estáticos serão armazenados:
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
 
 
 MEDIA_URL = '/media/'
