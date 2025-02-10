@@ -1,11 +1,15 @@
 import os
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path
 from environ import Env
+
 env = Env()
 env.read_env()
 
+
 ENVIRONMENT = env('ENVIRONMENT', default="development")
-ENVIRONMENT = "production"
+# ENVIRONMENT = "production"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -134,11 +138,10 @@ USE_TZ = True
 # Arquivos estáticos (CSS, JavaScript, Imagens)
 # O Django usa STATIC_URL para localizar os arquivos estáticos
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Se você estiver em um ambiente de produção, você também pode precisar definir onde os arquivos estáticos serão armazenados:
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -12,14 +12,15 @@
     <title>
         {% block title %}
             Auctions
-        {% endblock %}</title>
+        {% endblock %}
+    </title>
 </head>
 <body class="p-4 bg-blue-50 min-h-screen flex flex-col items-center">
     <div class="p-6 bg-blue-100 rounded-xl gap-4 w-full max-w-7xl">
         <nav class="flex flex-col md:flex-row justify-between items-center gap-6">
             <section class="text-center md:text-left">
                 {% if user.is_authenticated %}
-                    <p class="text-2xl font-light lg:text-5xl ">Welcome, <strong>{{ user.username }}</strong>.</p>
+                    <p class="text-2xl font-light lg:text-5xl">Welcome, <strong>{{ user.username }}</strong>.</p>
                 {% else %}
                     <p class="font-light">Not signed in.</p>
                 {% endif %}
@@ -27,27 +28,27 @@
 
             <ul class="flex flex-col md:flex-row gap-4 w-full md:w-auto items-center">
                 <li class="w-full md:w-auto">
-                    <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'index' %}">Active Listings</a>
+                    <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'index' %}">Active Listings</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="w-full md:w-auto">
-                        <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'categories' %}">Categories</a>
+                        <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'categories' %}">Categories</a>
                     </li>
                     <li class="w-full md:w-auto">
-                        <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'watchlist' %}">Watchlist</a>
+                        <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'watchlist' %}">Watchlist</a>
                     </li>
                     <li class="w-full md:w-auto">
-                        <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'create_listing' %}">Create Listing</a>
+                        <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'create_listing' %}">Create Listing</a>
                     </li>
                     <li class="w-full md:w-auto">
-                        <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'logout' %}">Log Out</a>
+                        <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'logout' %}">Log Out</a>
                     </li>
                 {% else %}
                     <li class="w-full md:w-auto">
-                        <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'login' %}">Log In</a>
+                        <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'login' %}">Log In</a>
                     </li>
                     <li class="w-full md:w-auto">
-                        <a class="block text-cyan-100 font-medium text-xl lg:text-3xl bg-sky-500 rounded-xl p-2 text-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 lg:w-[170px] md:w-auto" href="{% url 'register' %}">Register</a>
+                        <a class="block text-cyan-100 font-medium text-lg lg:text-xl bg-sky-500 rounded-xl p-1.5 text-center leading-tight flex items-center justify-center transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-500 active:bg-blue-700 w-full md:w-[170px] h-12" href="{% url 'register' %}">Register</a>
                     </li>
                 {% endif %}
             </ul>
